@@ -47,7 +47,7 @@ public class Surface extends JPanel {
         return retValue;
     }
 
-    private void open(int x, int y) {
+    public void open(int x, int y) {
         sites[getIdFromCoords(x, y)].setId(getIdFromCoords(x, y));
         for (int id : getAdjacents(x, y)) {
             if (sites[id].isOpen()) {
