@@ -12,11 +12,8 @@ public class Percolation extends JFrame {
         setTitle("Percolation demo");
         setSize(800, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        surface.open(5, 6);
-        surface.open(5, 7);
-        int id = surface.findRoot(surface.getIdFromCoords(5, 7));
-        id = surface.findRoot(surface.getIdFromCoords(5, 6));
-
+        surface.open(5, 9);
+        int id = surface.findRoot(surface.getIdFromCoords(5, 9));
     }
 
     public static void main(String[] args) {

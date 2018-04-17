@@ -11,8 +11,8 @@ public class Surface extends JPanel {
 
     public Surface() {
         int i = 0;
-        for (Integer x = 0; x < 10; x++) {
-            for (Integer y = 0; y < 10; y++) {
+        for (Integer y = 0; y < 10; y++) {
+            for (Integer x = 0; x < 10; x++) {
                 sites[i] = new Site(Site.NO_ROOT, (x + 1) * width, (y + 1) * height, width, height);
                 i++;
             }
@@ -57,7 +57,11 @@ public class Surface extends JPanel {
     }
 
     public int getIdFromCoords(int x, int y) {
-        return x + (10 * y);
+        int tempId = x + (10 * y);
+        if (tempId > 99) {
+            tempId = Site.VIRTUAL_BOTTOM;
+        }
+        return tempId;
     }
 
     public int[] getCoordsFromId(int id) {
