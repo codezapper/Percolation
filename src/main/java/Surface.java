@@ -21,7 +21,7 @@ public class Surface extends JPanel {
         sites[i + 1] = new Site(Site.VIRTUAL_BOTTOM, -2, -2, -1, -1);
     }
 
-    private ArrayList<Integer> getAdjacents(int x, int y) {
+    public ArrayList<Integer> getAdjacents(int x, int y) {
         int[][] coords = {{x - 1, y}, {x + 1, y}, {x, y - 1}, {x, y + 1}};
         ArrayList<Integer> retValue = new ArrayList<Integer>();
         Boolean addedVirtualTop = false;
@@ -56,11 +56,11 @@ public class Surface extends JPanel {
         }
     }
 
-    private int getIdFromCoords(int x, int y) {
+    public int getIdFromCoords(int x, int y) {
         return x + (10 * y);
     }
 
-    private int[] getCoordsFromId(int id) {
+    public int[] getCoordsFromId(int id) {
         int[] coords = new int[2];
         if (id < 0) {
             coords[0] = -1;
@@ -72,7 +72,7 @@ public class Surface extends JPanel {
         return coords;
     }
 
-    private Integer findRoot(int id) {
+    public Integer findRoot(int id) {
         while ((sites[id].getId() != id) && (sites[id].getId() != Site.NO_ROOT)) {
             id = sites[id].getId();
         }

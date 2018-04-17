@@ -9,10 +9,4 @@ class SiteTest {
         site.setId(1);
         assertEquals(true, site.isOpen());
     }
-
-    void testGetRoot() {
-    }
-
-    void testIsOpen() {
-    }
 }
