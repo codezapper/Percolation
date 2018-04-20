@@ -50,7 +50,21 @@ class SurfaceTest extends GroovyTestCase {
         assertEquals(surface.findRoot(surface.getIdFromCoords(2, 6)), surface.findRoot(surface.getIdFromCoords(5, 5)))
         surface.open(2, 8);
         surface.open(2, 7);
-//        surface.open(2, 9);
-        assertEquals(surface.findRoot(surface.getIdFromCoords(2, 8)), surface.findRoot(surface.getIdFromCoords(5, 5)))
+        surface.open(2, 9);
+        assertEquals(surface.findRoot(surface.getIdFromCoords(2, 9)), surface.findRoot(surface.getIdFromCoords(5, 5)))
+        assertEquals(surface.findRoot(surface.getIdFromCoords(2, 9)), surface.findRoot(surface.getIdFromCoords(1, 5)))
+
+        surface.open(1, 0);
+        surface.open(1, 1);
+        surface.open(1, 2);
+        surface.open(1, 3);
+        surface.open(1, 4);
+        surface.open(1, 5);
+        surface.open(1, 6);
+        surface.open(1, 7);
+        surface.open(1, 8);
+        surface.open(1, 9);
+        assertEquals(91, surface.findRoot(Site.VIRTUAL_TOP));
+        assertEquals(91, surface.findRoot(Site.VIRTUAL_BOTTOM));
     }
 }

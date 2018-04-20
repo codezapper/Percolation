@@ -50,13 +50,21 @@ public class Surface extends JPanel {
     public void open(int x, int y) {
         sites[getIdFromCoords(x, y)].setId(getIdFromCoords(x, y));
         for (int id : getAdjacents(x, y)) {
-            if (sites[id].isOpen()) {
-                sites[findRoot(id)].setId(getIdFromCoords(x, y));
+            if ((id == Site.VIRTUAL_TOP) || (id == Site.VIRTUAL_BOTTOM)) {
+                sites[id].setId(getIdFromCoords(x, y));
+            } else {
+                if (sites[id].isOpen()) {
+                    sites[findRoot(id)].setId(getIdFromCoords(x, y));
+                }
             }
         }
     }
 
     public int getIdFromCoords(int x, int y) {
+        if (y < 0) {
+            return Site.VIRTUAL_TOP;
+        }
+
         int tempId = x + (10 * y);
         if (tempId > 99) {
             tempId = Site.VIRTUAL_BOTTOM;
