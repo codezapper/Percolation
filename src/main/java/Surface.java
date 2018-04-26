@@ -9,7 +9,12 @@ public class Surface extends JPanel {
     private int width = 30;
     private int height = 30;
 
-    public Surface() {
+    @Override
+    public Dimension getPreferredSize() {
+        return new Dimension(800, 800);
+    }
+
+    private void initSites() {
         int i = 0;
         for (Integer y = 0; y < 10; y++) {
             for (Integer x = 0; x < 10; x++) {
@@ -19,6 +24,10 @@ public class Surface extends JPanel {
         }
         sites[i] = new Site(Site.VIRTUAL_TOP, -1, -1, -1, -1);
         sites[i + 1] = new Site(Site.VIRTUAL_BOTTOM, -2, -2, -1, -1);
+    }
+
+    public Surface() {
+        initSites();
     }
 
     public ArrayList<Integer> getAdjacents(int x, int y) {
