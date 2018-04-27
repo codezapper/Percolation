@@ -9,21 +9,27 @@ public class Surface extends JPanel {
     private int width = 30;
     private int height = 30;
 
+    private int columns = 10;
+    private int rows = 10;
+
+    public static final Integer VIRTUAL_TOP = 100;
+    public static final Integer VIRTUAL_BOTTOM = 101;
+
     @Override
     public Dimension getPreferredSize() {
-        return new Dimension(800, 800);
+        return new Dimension(width * (columns + 1), height * (rows + 1));
     }
 
     private void initSites() {
         int i = 0;
         for (Integer y = 0; y < 10; y++) {
             for (Integer x = 0; x < 10; x++) {
-                sites[i] = new Site(Site.NO_ROOT, (x + 1) * width, (y + 1) * height, width, height);
+                sites[i] = new Site(Site.NO_ROOT, (x + 1) * width, (y + 1) * height, width, height, VIRTUAL_TOP, VIRTUAL_BOTTOM);
                 i++;
             }
         }
-        sites[i] = new Site(Site.VIRTUAL_TOP, -1, -1, -1, -1);
-        sites[i + 1] = new Site(Site.VIRTUAL_BOTTOM, -2, -2, -1, -1);
+        sites[i] = new Site(VIRTUAL_TOP, -1, -1, -1, -1, VIRTUAL_TOP, VIRTUAL_BOTTOM);
+        sites[i + 1] = new Site(VIRTUAL_BOTTOM, -2, -2, -1, -1, VIRTUAL_TOP, VIRTUAL_BOTTOM);
     }
 
     public Surface() {
@@ -42,9 +48,9 @@ public class Surface extends JPanel {
                 int id = getIdFromCoords(_x, _y);
 
                 if (_y == 0) {
-                    retValue.add(Site.VIRTUAL_TOP);
+                    retValue.add(VIRTUAL_TOP);
                 } else if (_y == 9) {
-                    retValue.add(Site.VIRTUAL_BOTTOM);
+                    retValue.add(VIRTUAL_BOTTOM);
                 }
 
                 retValue.add(id);
@@ -59,7 +65,7 @@ public class Surface extends JPanel {
     public void open(int x, int y) {
         sites[getIdFromCoords(x, y)].setId(getIdFromCoords(x, y));
         for (int id : getAdjacents(x, y)) {
-            if ((id == Site.VIRTUAL_TOP) || (id == Site.VIRTUAL_BOTTOM)) {
+            if ((id == VIRTUAL_TOP) || (id == VIRTUAL_BOTTOM)) {
                 sites[id].setId(getIdFromCoords(x, y));
             } else {
                 if (sites[id].isOpen()) {
@@ -71,12 +77,12 @@ public class Surface extends JPanel {
 
     public int getIdFromCoords(int x, int y) {
         if (y < 0) {
-            return Site.VIRTUAL_TOP;
+            return VIRTUAL_TOP;
         }
 
         int tempId = x + (10 * y);
         if (tempId > 99) {
-            tempId = Site.VIRTUAL_BOTTOM;
+            tempId = VIRTUAL_BOTTOM;
         }
         return tempId;
     }

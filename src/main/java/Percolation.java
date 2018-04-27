@@ -19,7 +19,7 @@ public class Percolation {
         btnPanel.add(btnQuit);
         JPanel topPanel = new JPanel();
         JPanel mainPanel = new JPanel(new BorderLayout());
-        topPanel.setSize(800, 800);
+//        topPanel.setSize(500, 500);
         Surface surface = new Surface();
         topPanel.add(surface);
 

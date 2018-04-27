@@ -6,20 +6,22 @@ public class Site {
     private Integer width;
     private Integer height;
 
-    private Integer id = null;
-    private Integer root = null;
+    private Integer id;
+    private Integer root;
+    private Integer virtual_top;
+    private Integer virtual_bottom;
 
-    public static final Integer VIRTUAL_TOP = 100;
-    public static final Integer VIRTUAL_BOTTOM = 101;
     public static final Integer NO_ROOT = -1;
 
-    public Site(Integer id, Integer x, Integer y, Integer width, Integer height) {
+    public Site(Integer id, Integer x, Integer y, Integer width, Integer height, Integer virtual_top, Integer virtual_bottom) {
         this.id = id;
         this.root = NO_ROOT;
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
+        this.virtual_top = virtual_top;
+        this.virtual_bottom = virtual_bottom;
     }
 
     public int getX() {
@@ -65,7 +67,7 @@ public class Site {
     }
 
     public Boolean isOpen() {
-        if ((id == VIRTUAL_TOP) || (id == VIRTUAL_BOTTOM)) {
+        if ((id == virtual_top) || (id == virtual_bottom)) {
             return true;
         }
         return !(id == NO_ROOT);
