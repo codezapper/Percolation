@@ -12,15 +12,14 @@ public class Percolation {
 
         pane.setLayout(new BorderLayout());
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        JButton btnOpen = new JButton("Open");
+        JButton btnOpen = new JButton("Open random site");
         JButton btnQuit = new JButton("Quit");
 
         btnPanel.add(btnOpen);
         btnPanel.add(btnQuit);
         JPanel topPanel = new JPanel();
         JPanel mainPanel = new JPanel(new BorderLayout());
-//        topPanel.setSize(500, 500);
-        Surface surface = new Surface();
+        Surface surface = new Surface(50, 50, 15, 15);
         topPanel.add(surface);
 
         mainPanel.add(topPanel, BorderLayout.NORTH);

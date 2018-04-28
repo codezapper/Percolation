@@ -3,17 +3,17 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class Surface extends JPanel {
-    private Site[] sites = new Site[102];
+    private Site[] sites;
     private Graphics2D g2d = null;
 
-    private int width = 30;
-    private int height = 30;
+    private int width;
+    private int height;
 
-    private int columns = 10;
-    private int rows = 10;
+    private int columns;
+    private int rows;
 
-    public static final Integer VIRTUAL_TOP = 100;
-    public static final Integer VIRTUAL_BOTTOM = 101;
+    public Integer virtual_top;
+    public Integer virtual_bottom;
 
     @Override
     public Dimension getPreferredSize() {
@@ -21,25 +21,31 @@ public class Surface extends JPanel {
     }
 
     private void initSites() {
+        virtual_top = rows * columns;
+        virtual_bottom = (rows * columns) + 1;
+        sites = new Site[(rows * columns) + 2];
         int i = 0;
-        for (Integer y = 0; y < 10; y++) {
-            for (Integer x = 0; x < 10; x++) {
-                sites[i] = new Site(Site.NO_ROOT, (x + 1) * width, (y + 1) * height, width, height, VIRTUAL_TOP, VIRTUAL_BOTTOM);
+        for (Integer row = 0; row < rows; row++) {
+            for (Integer column = 0; column < columns; column++) {
+                sites[i] = new Site(Site.NO_ROOT, (column + 1) * width, (row + 1) * height, width, height, virtual_top, virtual_bottom);
                 i++;
             }
         }
-        sites[i] = new Site(VIRTUAL_TOP, -1, -1, -1, -1, VIRTUAL_TOP, VIRTUAL_BOTTOM);
-        sites[i + 1] = new Site(VIRTUAL_BOTTOM, -2, -2, -1, -1, VIRTUAL_TOP, VIRTUAL_BOTTOM);
+        sites[i] = new Site(virtual_top, -1, -1, -1, -1, virtual_top, virtual_bottom);
+        sites[i + 1] = new Site(virtual_bottom, -2, -2, -1, -1, virtual_top, virtual_bottom);
     }
 
-    public Surface() {
+    public Surface(Integer rows, Integer columns, Integer width, Integer height) {
+        this.rows = rows;
+        this.columns = columns;
+        this.width = width;
+        this.height = height;
         initSites();
     }
 
     public ArrayList<Integer> getAdjacents(int x, int y) {
         int[][] coords = {{x - 1, y}, {x + 1, y}, {x, y - 1}, {x, y + 1}};
-        ArrayList<Integer> retValue = new ArrayList<Integer>();
-        Boolean addedVirtualTop = false;
+        ArrayList<Integer> retValue = new ArrayList<>();
 
         for (int[] coord : coords) {
             try {
@@ -48,9 +54,9 @@ public class Surface extends JPanel {
                 int id = getIdFromCoords(_x, _y);
 
                 if (_y == 0) {
-                    retValue.add(VIRTUAL_TOP);
+                    retValue.add(virtual_top);
                 } else if (_y == 9) {
-                    retValue.add(VIRTUAL_BOTTOM);
+                    retValue.add(virtual_bottom);
                 }
 
                 retValue.add(id);
@@ -65,7 +71,7 @@ public class Surface extends JPanel {
     public void open(int x, int y) {
         sites[getIdFromCoords(x, y)].setId(getIdFromCoords(x, y));
         for (int id : getAdjacents(x, y)) {
-            if ((id == VIRTUAL_TOP) || (id == VIRTUAL_BOTTOM)) {
+            if ((id == virtual_top) || (id == virtual_bottom)) {
                 sites[id].setId(getIdFromCoords(x, y));
             } else {
                 if (sites[id].isOpen()) {
@@ -77,12 +83,12 @@ public class Surface extends JPanel {
 
     public int getIdFromCoords(int x, int y) {
         if (y < 0) {
-            return VIRTUAL_TOP;
+            return virtual_top;
         }
 
         int tempId = x + (10 * y);
         if (tempId > 99) {
-            tempId = VIRTUAL_BOTTOM;
+            tempId = virtual_bottom;
         }
         return tempId;
     }

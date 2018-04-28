@@ -7,7 +7,6 @@ public class Site {
     private Integer height;
 
     private Integer id;
-    private Integer root;
     private Integer virtual_top;
     private Integer virtual_bottom;
 
@@ -15,7 +14,6 @@ public class Site {
 
     public Site(Integer id, Integer x, Integer y, Integer width, Integer height, Integer virtual_top, Integer virtual_bottom) {
         this.id = id;
-        this.root = NO_ROOT;
         this.x = x;
         this.y = y;
         this.width = width;
@@ -56,14 +54,6 @@ public class Site {
 
     public Integer getId() {
         return id;
-    }
-
-    public void setRoot(Integer id) {
-        root = id;
-    }
-
-    public Integer getRoot() {
-        return root;
     }
 
     public Boolean isOpen() {
