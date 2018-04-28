@@ -55,7 +55,7 @@ public class Surface extends JPanel {
 
                 if (_y == 0) {
                     retValue.add(virtual_top);
-                } else if (_y == 9) {
+                } else if (_y == (rows - 1)) {
                     retValue.add(virtual_bottom);
                 }
 
@@ -79,6 +79,8 @@ public class Surface extends JPanel {
                 }
             }
         }
+        revalidate();
+        repaint();
     }
 
     public int getIdFromCoords(int x, int y) {
@@ -86,8 +88,8 @@ public class Surface extends JPanel {
             return virtual_top;
         }
 
-        int tempId = x + (10 * y);
-        if (tempId > 99) {
+        int tempId = x + (columns * y);
+        if (tempId > ((columns * rows) -1)) {
             tempId = virtual_bottom;
         }
         return tempId;
@@ -99,8 +101,8 @@ public class Surface extends JPanel {
             coords[0] = -1;
             coords[1] = -1;
         } else {
-            coords[0] = id % 10;
-            coords[1] = id / 10;
+            coords[0] = id % columns;
+            coords[1] = id / columns;
         }
         return coords;
     }
