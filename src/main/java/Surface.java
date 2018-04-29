@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Surface extends JPanel {
     private Site[] sites;
@@ -12,8 +13,8 @@ public class Surface extends JPanel {
     private int columns;
     private int rows;
 
-    public Integer virtual_top;
-    public Integer virtual_bottom;
+    public Integer virtualTop;
+    public Integer virtualBottom;
 
     @Override
     public Dimension getPreferredSize() {
@@ -21,18 +22,18 @@ public class Surface extends JPanel {
     }
 
     private void initSites() {
-        virtual_top = rows * columns;
-        virtual_bottom = (rows * columns) + 1;
+        virtualTop = rows * columns;
+        virtualBottom = (rows * columns) + 1;
         sites = new Site[(rows * columns) + 2];
         int i = 0;
         for (Integer row = 0; row < rows; row++) {
             for (Integer column = 0; column < columns; column++) {
-                sites[i] = new Site(Site.NO_ROOT, (column + 1) * width, (row + 1) * height, width, height, virtual_top, virtual_bottom);
+                sites[i] = new Site(Site.NO_ROOT, (column + 1) * width, (row + 1) * height, width, height, virtualTop, virtualBottom);
                 i++;
             }
         }
-        sites[i] = new Site(virtual_top, -1, -1, -1, -1, virtual_top, virtual_bottom);
-        sites[i + 1] = new Site(virtual_bottom, -2, -2, -1, -1, virtual_top, virtual_bottom);
+        sites[i] = new Site(virtualTop, -1, -1, -1, -1, virtualTop, virtualBottom);
+        sites[i + 1] = new Site(virtualBottom, -2, -2, -1, -1, virtualTop, virtualBottom);
     }
 
     public Surface(Integer rows, Integer columns, Integer width, Integer height) {
@@ -54,12 +55,14 @@ public class Surface extends JPanel {
                 int id = getIdFromCoords(_x, _y);
 
                 if (_y == 0) {
-                    retValue.add(virtual_top);
+                    retValue.add(virtualTop);
                 } else if (_y == (rows - 1)) {
-                    retValue.add(virtual_bottom);
+                    retValue.add(virtualBottom);
                 }
 
-                retValue.add(id);
+                if (id > -1) {
+                    retValue.add(id);
+                }
             } catch (ArrayIndexOutOfBoundsException ex) {
                 System.out.println("Skipping because out of bounds");
             }
@@ -68,10 +71,31 @@ public class Surface extends JPanel {
         return retValue;
     }
 
+    public void openUntilConnected() {
+        while (findRoot(virtualTop) != findRoot(virtualBottom)) {
+            open(new Random().nextInt(50), new Random().nextInt(50));
+        }
+    }
+
+    public void showConnected() {
+        Integer virtualTopRoot = findRoot(virtualTop);
+        Integer virtualBottomRoot = findRoot(virtualBottom);
+        if (virtualTopRoot != virtualBottomRoot) {
+            return;
+        }
+        for (Integer i = 0; i < (rows * columns) - 1; i++) {
+            if (findRoot(i) == virtualBottomRoot) {
+                sites[i].setHighlighted(true);
+            }
+        }
+        revalidate();
+        repaint();
+    }
+
     public void open(int x, int y) {
         sites[getIdFromCoords(x, y)].setId(getIdFromCoords(x, y));
         for (int id : getAdjacents(x, y)) {
-            if ((id == virtual_top) || (id == virtual_bottom)) {
+            if ((id == virtualTop) || (id == virtualBottom)) {
                 sites[id].setId(getIdFromCoords(x, y));
             } else {
                 if (sites[id].isOpen()) {
@@ -85,12 +109,12 @@ public class Surface extends JPanel {
 
     public int getIdFromCoords(int x, int y) {
         if (y < 0) {
-            return virtual_top;
+            return virtualTop;
         }
 
         int tempId = x + (columns * y);
         if (tempId > ((columns * rows) -1)) {
-            tempId = virtual_bottom;
+            tempId = virtualBottom;
         }
         return tempId;
     }

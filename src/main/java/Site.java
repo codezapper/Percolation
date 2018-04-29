@@ -10,6 +10,16 @@ public class Site {
     private Integer virtual_top;
     private Integer virtual_bottom;
 
+    public boolean isHighlighted() {
+        return highlighted;
+    }
+
+    public void setHighlighted(boolean highlighted) {
+        this.highlighted = highlighted;
+    }
+
+    private boolean highlighted = false;
+
     public static final Integer NO_ROOT = -1;
 
     public Site(Integer id, Integer x, Integer y, Integer width, Integer height, Integer virtual_top, Integer virtual_bottom) {
@@ -41,7 +51,11 @@ public class Site {
         g2d.drawRect(x_top_corner, y_top_corner, width, height);
 
         if (isOpen()) {
-            g2d.setPaint(new Color(150, 150, 200));
+            if (isHighlighted()) {
+                g2d.setPaint(new Color(255, 100, 100));
+            } else {
+                g2d.setPaint(new Color(150, 150, 200));
+            }
         } else {
             g2d.setPaint(new Color(200, 200, 200));
         }

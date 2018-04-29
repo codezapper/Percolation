@@ -10,12 +10,6 @@ public class Percolation {
         initUI();
     }
 
-    private void openUntilConnected(Surface surface) {
-        while (surface.findRoot(surface.virtual_top) != surface.findRoot(surface.virtual_bottom)) {
-            surface.open(new Random().nextInt(50), new Random().nextInt(50));
-        }
-    }
-
     private void initUI() {
         JFrame frame = new JFrame("CustomLayoutDemo");
         Container pane = frame.getContentPane();
@@ -23,16 +17,19 @@ public class Percolation {
         pane.setLayout(new BorderLayout());
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton btnOpenUntilConnected = new JButton("Open until connected");
+        JButton btnShowConnected = new JButton("Show connection");
         JButton btnOpen = new JButton("Open random site");
         JButton btnQuit = new JButton("Quit");
 
         btnPanel.add(btnOpenUntilConnected);
+        btnPanel.add(btnShowConnected);
         btnPanel.add(btnOpen);
         btnPanel.add(btnQuit);
         JPanel topPanel = new JPanel();
         JPanel mainPanel = new JPanel(new BorderLayout());
 
-        btnOpenUntilConnected.addActionListener(e -> openUntilConnected(surface));
+        btnOpenUntilConnected.addActionListener(e -> surface.openUntilConnected());
+        btnShowConnected.addActionListener(e -> surface.showConnected());
         btnOpen.addActionListener(e -> surface.open(new Random().nextInt(50), new Random().nextInt(50)));
         btnQuit.addActionListener(e -> System.exit(0));
 
@@ -46,7 +43,6 @@ public class Percolation {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
-        surface.open(5, 5);
     }
 
     public static void main(String[] args) {
