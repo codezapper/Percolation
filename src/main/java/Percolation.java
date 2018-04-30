@@ -33,7 +33,7 @@ public class Percolation {
         btnOpen.addActionListener(e -> surface.open(new Random().nextInt(50), new Random().nextInt(50)));
         btnQuit.addActionListener(e -> System.exit(0));
 
-        surface = new Surface(50, 50, 15, 15);
+        surface = new Surface(5, 5, 30, 30);
         topPanel.add(surface);
 
         mainPanel.add(topPanel, BorderLayout.NORTH);
@@ -43,6 +43,11 @@ public class Percolation {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+//        surface.open(4, 0);
+//        surface.open(4, 1);
+//        surface.open(4, 2);
+//        surface.open(4, 3);
+//        surface.open(4, 4);
     }
 
     public static void main(String[] args) {

@@ -52,13 +52,20 @@ public class Surface extends JPanel {
             try {
                 int _x = coord[0];
                 int _y = coord[1];
-                int id = getIdFromCoords(_x, _y);
+                if ((_x < 0) || (_x >= columns)) {
+                    continue;
+                }
+
+                if (_y >= rows) {
+                    retValue.add(virtualBottom);
+                    continue;
+                }
 
                 if (_y == 0) {
                     retValue.add(virtualTop);
-                } else if (_y == (rows - 1)) {
-                    retValue.add(virtualBottom);
                 }
+
+                int id = getIdFromCoords(_x, _y);
 
                 if (id > -1) {
                     retValue.add(id);
@@ -72,8 +79,9 @@ public class Surface extends JPanel {
     }
 
     public void openUntilConnected() {
+        initSites();
         while (findRoot(virtualTop) != findRoot(virtualBottom)) {
-            open(new Random().nextInt(50), new Random().nextInt(50));
+            open(new Random().nextInt(columns), new Random().nextInt(rows));
         }
     }
 
@@ -83,8 +91,9 @@ public class Surface extends JPanel {
         if (virtualTopRoot != virtualBottomRoot) {
             return;
         }
-        for (Integer i = 0; i < (rows * columns) - 1; i++) {
-            if (findRoot(i) == virtualBottomRoot) {
+        for (Integer i = 0; i < (rows * columns); i++) {
+            Integer currentRoot = findRoot(i);
+            if (currentRoot == virtualBottomRoot) {
                 sites[i].setHighlighted(true);
             }
         }
@@ -93,13 +102,15 @@ public class Surface extends JPanel {
     }
 
     public void open(int x, int y) {
-        sites[getIdFromCoords(x, y)].setId(getIdFromCoords(x, y));
+        Integer currentId = getIdFromCoords(x, y);
+        sites[currentId].setId(currentId);
         for (int id : getAdjacents(x, y)) {
             if ((id == virtualTop) || (id == virtualBottom)) {
-                sites[id].setId(getIdFromCoords(x, y));
+                sites[id].setId(currentId);
             } else {
                 if (sites[id].isOpen()) {
-                    sites[findRoot(id)].setId(getIdFromCoords(x, y));
+                    Integer currentRoot = findRoot(id);
+                    sites[currentRoot].setId(currentId);
                 }
             }
         }
@@ -110,6 +121,10 @@ public class Surface extends JPanel {
     public int getIdFromCoords(int x, int y) {
         if (y < 0) {
             return virtualTop;
+        }
+
+        if ((x < 0) || (x >= columns) || (y >= rows)) {
+            return -1;
         }
 
         int tempId = x + (columns * y);
