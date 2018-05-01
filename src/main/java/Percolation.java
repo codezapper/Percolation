@@ -43,11 +43,6 @@ public class Percolation {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
-//        surface.open(4, 0);
-//        surface.open(4, 1);
-//        surface.open(4, 2);
-//        surface.open(4, 3);
-//        surface.open(4, 4);
     }
 
     public static void main(String[] args) {

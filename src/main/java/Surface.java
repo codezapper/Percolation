@@ -61,7 +61,7 @@ public class Surface extends JPanel {
                     continue;
                 }
 
-                if (_y == 0) {
+                if (_y < 0) {
                     retValue.add(virtualTop);
                 }
 
