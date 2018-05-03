@@ -63,6 +63,7 @@ public class Surface extends JPanel {
 
                 if (_y < 0) {
                     retValue.add(virtualTop);
+                    continue;
                 }
 
                 int id = getIdFromCoords(_x, _y);
@@ -101,17 +102,14 @@ public class Surface extends JPanel {
         repaint();
     }
 
-    public void open(int x, int y) {
+    public void open(Integer x, Integer y) {
+        System.out.println(x.toString() + " - " + y.toString());
         Integer currentId = getIdFromCoords(x, y);
         sites[currentId].setId(currentId);
         for (int id : getAdjacents(x, y)) {
-            if ((id == virtualTop) || (id == virtualBottom)) {
-                sites[id].setId(currentId);
-            } else {
-                if (sites[id].isOpen()) {
-                    Integer currentRoot = findRoot(id);
-                    sites[currentRoot].setId(currentId);
-                }
+            if (sites[id].isOpen()) {
+                Integer currentRoot = findRoot(id);
+                sites[currentRoot].setId(currentId);
             }
         }
         revalidate();

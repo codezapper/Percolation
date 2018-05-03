@@ -30,7 +30,7 @@ public class Percolation {
 
         btnOpenUntilConnected.addActionListener(e -> surface.openUntilConnected());
         btnShowConnected.addActionListener(e -> surface.showConnected());
-        btnOpen.addActionListener(e -> surface.open(new Random().nextInt(50), new Random().nextInt(50)));
+        btnOpen.addActionListener(e -> surface.open(new Random().nextInt(5), new Random().nextInt(5)));
         btnQuit.addActionListener(e -> System.exit(0));
 
         surface = new Surface(5, 5, 30, 30);
