@@ -10,8 +10,27 @@ public class Surface extends JPanel {
     private int width;
     private int height;
 
+    public int getColumns() {
+        return columns;
+    }
+
+    public int getRows() {
+        return rows;
+    }
+
     private int columns;
     private int rows;
+
+    private Integer nOpen;
+    private Integer nClosed;
+
+    public Integer getOpen() {
+        return nOpen;
+    }
+
+    public Integer getClosed() {
+        return nClosed;
+    }
 
     public Integer virtualTop;
     public Integer virtualBottom;
@@ -22,6 +41,8 @@ public class Surface extends JPanel {
     }
 
     private void initSites() {
+        nOpen = 0;
+        nClosed = rows * columns;
         virtualTop = rows * columns;
         virtualBottom = (rows * columns) + 1;
         sites = new Site[(rows * columns) + 2];
@@ -82,7 +103,13 @@ public class Surface extends JPanel {
     public void openUntilConnected() {
         initSites();
         while (findRoot(virtualTop) != findRoot(virtualBottom)) {
-            open(new Random().nextInt(columns), new Random().nextInt(rows));
+            Integer x = new Random().nextInt(columns);
+            Integer y = new Random().nextInt(rows);
+            if (!sites[getIdFromCoords(x, y)].isOpen()) {
+                nOpen++;
+                nClosed--;
+                open(x, y);
+            }
         }
     }
 
@@ -103,7 +130,6 @@ public class Surface extends JPanel {
     }
 
     public void open(Integer x, Integer y) {
-        System.out.println(x.toString() + " - " + y.toString());
         Integer currentId = getIdFromCoords(x, y);
         sites[currentId].setId(currentId);
         for (int id : getAdjacents(x, y)) {
